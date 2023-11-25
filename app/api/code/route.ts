@@ -49,14 +49,16 @@ export async function POST(
         });
       }
 
-      if(!isPro){
-        await increaseApiLimit();
-      }
-
+      
       const response = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
         messages: [instructionMessage, ...messages]
       });
+
+      if(!isPro){
+        await increaseApiLimit();
+      }
+
       return NextResponse.json(response.data.choices[0].message);
     } catch (error) {
       console.log("[CODE ERROR]", error);
